@@ -1,4 +1,4 @@
-main: main.java.me.staartvin.todolistexpress.TodoListExpress
+main: me.staartvin.todolistexpress.TodoListExpress
 name: TodoListExpress
 url:
 version: ${project.version}
