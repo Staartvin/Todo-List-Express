@@ -20,6 +20,19 @@ public class TodoList {
     // Description of the todo list
     private String description;
 
+    public TodoList() {
+    }
+
+    public TodoList(UUID uuid, String name) {
+        this.setName(name);
+        this.setOwner(uuid);
+    }
+
+    public TodoList(UUID uuid, String name, String description) {
+        this(uuid, name);
+
+        this.setDescription(description);
+    }
 
     /**
      * Get the todos in this list

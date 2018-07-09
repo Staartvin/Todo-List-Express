@@ -45,4 +45,44 @@ public class TodoListManager {
     public List<TodoList> getRelevantTodoLists(UUID uuid) {
         return todoLists.stream().filter(todoList -> todoList.isPlayerRelated(uuid)).collect(Collectors.toList());
     }
+
+    /**
+     * Create a new todo list created by the given player.
+     *
+     * @param uuid UUID of the creator
+     * @param name Name of the list
+     * @return true if the todo list was succesfully created. False otherwise.
+     */
+    public boolean createTodoList(UUID uuid, String name) {
+        // Don't create a new todo list if it already exists.
+        if (getTodoList(name).isPresent()) {
+            return false;
+        }
+
+        // Create new todo list
+        TodoList newTodoList = new TodoList(uuid, name);
+
+        // Add it to the lists of todo lists
+        todoLists.add(newTodoList);
+
+        return true;
+    }
+
+    /**
+     * Remove all todo lists that match the given name.
+     *
+     * @param name Name of the todo list to remove
+     * @return true if at least one todo list has been removed. False otherwise.
+     */
+    public boolean removeTodoList(String name) {
+        // If there is no todo list with the given name, abort the procedure prematurely.
+        if (!getTodoList(name).isPresent()) {
+            return false;
+        }
+
+        // Remove all todo lists that match the given name.
+        todoLists.removeIf(todoList -> todoList.getName().equalsIgnoreCase(name));
+
+        return true;
+    }
 }

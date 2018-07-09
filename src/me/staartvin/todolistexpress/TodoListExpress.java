@@ -1,11 +1,15 @@
 package me.staartvin.todolistexpress;
 
 import me.staartvin.todolistexpress.commands.manager.CommandsManager;
+import me.staartvin.todolistexpress.storage.StorageManager;
+import me.staartvin.todolistexpress.todolists.TodoListManager;
 import org.bukkit.plugin.java.JavaPlugin;
 
 public class TodoListExpress extends JavaPlugin {
 
     private CommandsManager commandsManager;
+    private TodoListManager todoListManager;
+    private StorageManager storageManager;
 
     public void onEnable() {
 
@@ -14,6 +18,14 @@ public class TodoListExpress extends JavaPlugin {
 
         // Set executor of /todolist to commands manager so it handles all commands
         this.getCommand("todolist").setExecutor(getCommandsManager());
+
+        // Create a todo manager that keeps track of all lists
+        this.setTodoListManager(new TodoListManager(this));
+
+        // Create a storage manager that is used to store the lists
+        this.setStorageManager(new StorageManager(this));
+
+        // TODO: Set storage handler of storage manager
 
         this.getLogger().info(this.getDescription().getFullName() + " has been enabled!");
     }
@@ -28,5 +40,21 @@ public class TodoListExpress extends JavaPlugin {
 
     public void setCommandsManager(CommandsManager commandsManager) {
         this.commandsManager = commandsManager;
+    }
+
+    public TodoListManager getTodoListManager() {
+        return todoListManager;
+    }
+
+    public void setTodoListManager(TodoListManager todoListManager) {
+        this.todoListManager = todoListManager;
+    }
+
+    public StorageManager getStorageManager() {
+        return storageManager;
+    }
+
+    public void setStorageManager(StorageManager storageManager) {
+        this.storageManager = storageManager;
     }
 }
