@@ -24,6 +24,8 @@ public class CreateCommand extends TodoListCommand {
 
         sender.sendMessage("Creating a new list!");
 
+        // Slight adjustment
+
         return true;
     }
 
