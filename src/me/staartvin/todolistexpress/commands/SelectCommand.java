@@ -2,18 +2,21 @@ package me.staartvin.todolistexpress.commands;
 
 import me.staartvin.todolistexpress.TodoListExpress;
 import me.staartvin.todolistexpress.commands.manager.TodoListCommand;
+import me.staartvin.todolistexpress.todolists.types.TodoList;
 import me.staartvin.todolistexpress.util.TodoListUtils;
 import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
-/**
- * This command allows a player to create a todo list.
- */
-public class CreateCommand extends TodoListCommand {
+import java.util.UUID;
 
-    public CreateCommand(TodoListExpress plugin) {
+/**
+ * This command allows a player to select a todo list.
+ */
+public class SelectCommand extends TodoListCommand {
+
+    public SelectCommand(TodoListExpress plugin) {
         super(plugin);
     }
 
@@ -26,7 +29,7 @@ public class CreateCommand extends TodoListCommand {
         }
 
         if (!(sender instanceof Player)) {
-            sender.sendMessage(ChatColor.RED + "Unfortunately, only players can create todo lists.");
+            sender.sendMessage(ChatColor.RED + "Unfortunately, only players can select todo lists.");
             return true;
         }
 
@@ -38,39 +41,46 @@ public class CreateCommand extends TodoListCommand {
         // Get the name of the list
         String name = TodoListUtils.getStringFromArgs(args, 1);
 
+        TodoList selectedTodoList = plugin.getTodoListManager().getTodoList(name).orElse(null);
+
         // If there already exists a todo list with the given name, abort the mission.
-        if (plugin.getTodoListManager().getTodoList(name).isPresent()) {
+        if (selectedTodoList == null) {
             sender.sendMessage(ChatColor.RED +
-                    "There already exists a todo list with the given name.");
+                    "There is no todo list named '" + ChatColor.GOLD + name + ChatColor.RED + "'.");
             return true;
         }
 
-        // Try to create a todo list
-        boolean creationResult = plugin.getTodoListManager().createTodoList(((Player) sender).getUniqueId(), name);
+        UUID uuid = ((Player) sender).getUniqueId();
 
-        // Show message to the player indicating success or failure.
-        if (!creationResult) {
-            sender.sendMessage(ChatColor.RED + "Could not create todo list with the given name. Try again!");
-        } else {
-            sender.sendMessage(ChatColor.GREEN + "Todolist '" + ChatColor.GOLD + name + ChatColor.GREEN + "' " +
-                    "successfully created.");
+
+        // Check if the player is related to this todo list
+        if (!selectedTodoList.isPlayerRelated(uuid)) {
+            sender.sendMessage(ChatColor.RED + "You are not allowed to select this todo list because you are not " +
+                    "related to this todo list.");
+            return true;
         }
+
+        // Set this todo list as selected.
+        this.plugin.getCommandsManager().setSelectedTodoList(uuid, selectedTodoList.getName());
+
+        sender.sendMessage(ChatColor.GREEN + "Selected '" + ChatColor.GOLD + selectedTodoList
+                .getName() + ChatColor.GREEN + "'.");
 
         return true;
     }
 
     @Override
     public String getDescription() {
-        return "Create a new todo list";
+        return "Select a todo list";
     }
 
     @Override
     public String getPermission() {
-        return "todolistexpress.create";
+        return "todolistexpress.select";
     }
 
     @Override
     public String getUsage() {
-        return "/todolist create <name>";
+        return "/todolist select <name>";
     }
 }

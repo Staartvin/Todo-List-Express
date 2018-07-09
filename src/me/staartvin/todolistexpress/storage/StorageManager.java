@@ -12,6 +12,8 @@ public class StorageManager {
 
     public StorageManager(TodoListExpress plugin) {
         this.plugin = plugin;
+
+        plugin.getLogger().info("Loaded storage manager");
     }
 
     public StorageHandler getStorageHandler() {

@@ -10,6 +10,12 @@ commands:
         usage: "/todolist <command>"
         aliases: [todo]
 permissions:
+    todolistexpress.help:
+        description: Allow a player to see a list of commands that can be performed
+        default: true
+    todolistexpress.select:
+        description: Allow a player to select a todo list
+        default: true
     todolistexpress.create:
         description: Allow a player to create a new list
         default: true

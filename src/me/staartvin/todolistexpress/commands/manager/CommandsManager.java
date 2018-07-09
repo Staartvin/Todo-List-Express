@@ -2,6 +2,9 @@ package me.staartvin.todolistexpress.commands.manager;
 
 import me.staartvin.todolistexpress.TodoListExpress;
 import me.staartvin.todolistexpress.commands.CreateCommand;
+import me.staartvin.todolistexpress.commands.HelpCommand;
+import me.staartvin.todolistexpress.commands.SelectCommand;
+import me.staartvin.todolistexpress.todolists.types.TodoList;
 import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
@@ -27,8 +30,11 @@ public class CommandsManager implements TabExecutor {
     private final TodoListExpress plugin;
 
     // Use linked hashmap so that input order is kept
-    private final Map<List<String>, TodoListCommand> registeredCommands = new LinkedHashMap<List<String>,
-            TodoListCommand>();
+    private final Map<List<String>, TodoListCommand> registeredCommands = new LinkedHashMap<>();
+
+    // Track what list a player has selected
+    private Map<UUID, String> selectedTodoList = new HashMap<>();
+
 
     /**
      * All command aliases are set up in here.
@@ -38,6 +44,10 @@ public class CommandsManager implements TabExecutor {
 
         // Register command classes
         registeredCommands.put(Arrays.asList("create"), new CreateCommand(plugin));
+        registeredCommands.put(Arrays.asList("help"), new HelpCommand(plugin));
+        registeredCommands.put(Arrays.asList("select"), new SelectCommand(plugin));
+
+        plugin.getLogger().info("Loaded all commands");
     }
 
     /**
@@ -257,6 +267,47 @@ public class CommandsManager implements TabExecutor {
             }
         }
         return returnList;
+    }
+
+    /**
+     * Get the todo list that a player has selected. Will return null if the player has not selected a todo list or
+     * if the list does not exist anymore.
+     *
+     * @param uuid UUID of the player
+     * @return the selected {@link TodoList} object.
+     */
+    public Optional<TodoList> getSelectedTodoList(UUID uuid) {
+        if (!this.selectedTodoList.containsKey(uuid)) {
+            return Optional.empty();
+        }
+
+        String selectedTodoListName = this.selectedTodoList.get(uuid);
+
+        if (selectedTodoListName == null) {
+            return Optional.empty();
+        }
+
+        return plugin.getTodoListManager().getTodoList(selectedTodoListName);
+    }
+
+    /**
+     * Set the todo list that a player has selected.
+     *
+     * @param uuid UUID of the player
+     * @param name Name of the todo list the player has selected
+     */
+    public void setSelectedTodoList(UUID uuid, String name) {
+        this.selectedTodoList.put(uuid, name);
+    }
+
+    /**
+     * Check whether a player has selected a todo list.
+     *
+     * @param uuid UUID of the player
+     * @return true if the player has selected a valid todo list, false otherwise.
+     */
+    public boolean hasSelectedTodoList(UUID uuid) {
+        return this.getSelectedTodoList(uuid).isPresent();
     }
 
 }

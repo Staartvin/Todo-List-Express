@@ -17,6 +17,8 @@ public class TodoListManager {
 
     public TodoListManager(TodoListExpress plugin) {
         this.plugin = plugin;
+
+        plugin.getLogger().info("Loaded todo list manager");
     }
 
     /**
