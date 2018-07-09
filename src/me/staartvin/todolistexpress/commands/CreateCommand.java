@@ -8,6 +8,8 @@ import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
+import java.util.UUID;
+
 /**
  * This command allows a player to create a todo list.
  */
@@ -45,15 +47,20 @@ public class CreateCommand extends TodoListCommand {
             return true;
         }
 
+        UUID uuid = ((Player) sender).getUniqueId();
+
         // Try to create a todo list
-        boolean creationResult = plugin.getTodoListManager().createTodoList(((Player) sender).getUniqueId(), name);
+        boolean creationResult = plugin.getTodoListManager().createTodoList(uuid, name);
 
         // Show message to the player indicating success or failure.
         if (!creationResult) {
             sender.sendMessage(ChatColor.RED + "Could not create todo list with the given name. Try again!");
         } else {
-            sender.sendMessage(ChatColor.GREEN + "Todolist '" + ChatColor.GOLD + name + ChatColor.GREEN + "' " +
+            sender.sendMessage(ChatColor.GREEN + "Todo list '" + ChatColor.GOLD + name + ChatColor.GREEN + "' " +
                     "successfully created.");
+
+            // Select the todo list after creation, so that the player does not have to select it manually.
+            plugin.getCommandsManager().setSelectedTodoList(uuid, name);
         }
 
         return true;

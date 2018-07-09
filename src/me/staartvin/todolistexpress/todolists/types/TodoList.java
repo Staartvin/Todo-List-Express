@@ -18,7 +18,7 @@ public class TodoList {
     private String name;
 
     // Description of the todo list
-    private String description;
+    private String description = "No description";
 
     public TodoList() {
     }

@@ -3,6 +3,7 @@ package me.staartvin.todolistexpress.commands.manager;
 import me.staartvin.todolistexpress.TodoListExpress;
 import me.staartvin.todolistexpress.commands.CreateCommand;
 import me.staartvin.todolistexpress.commands.HelpCommand;
+import me.staartvin.todolistexpress.commands.InfoCommand;
 import me.staartvin.todolistexpress.commands.SelectCommand;
 import me.staartvin.todolistexpress.todolists.types.TodoList;
 import org.bukkit.ChatColor;
@@ -46,6 +47,7 @@ public class CommandsManager implements TabExecutor {
         registeredCommands.put(Arrays.asList("create"), new CreateCommand(plugin));
         registeredCommands.put(Arrays.asList("help"), new HelpCommand(plugin));
         registeredCommands.put(Arrays.asList("select"), new SelectCommand(plugin));
+        registeredCommands.put(Arrays.asList("info"), new InfoCommand(plugin));
 
         plugin.getLogger().info("Loaded all commands");
     }
@@ -284,6 +286,10 @@ public class CommandsManager implements TabExecutor {
         String selectedTodoListName = this.selectedTodoList.get(uuid);
 
         if (selectedTodoListName == null) {
+            // Remove the key, as it is not valid
+            this.selectedTodoList.remove(uuid);
+
+            // Return empty value.
             return Optional.empty();
         }
 

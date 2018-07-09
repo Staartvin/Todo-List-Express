@@ -13,6 +13,9 @@ permissions:
     todolistexpress.help:
         description: Allow a player to see a list of commands that can be performed
         default: true
+    todolistexpress.info:
+        description: Allow a player to see info about a todo list
+        default: true
     todolistexpress.select:
         description: Allow a player to select a todo list
         default: true
