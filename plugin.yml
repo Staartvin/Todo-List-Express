@@ -1,0 +1,32 @@
+main: main.java.me.staartvin.todolistexpress.TodoListExpress
+name: TodoListExpress
+url:
+version: ${project.version}
+authors: [Staartvin]
+description: Reward players based on their stats.
+commands:
+    todolist:
+        description: Main command of TodoListExpress
+        usage: "/todolist <command>"
+        aliases: [todo]
+permissions:
+    todolistexpress.create:
+        description: Allow a player to create a new list
+        default: true
+    todolistexpress.delete:
+        description: Allow a player to delete a list
+        default: true
+    todolistexpress.add:
+        description: Allow a player to add a todo to a list
+        default: true
+    todolistexpress.remove:
+        description: Allow a player to remove a todo from a list
+        default: true
+    todolistexpress.share:
+        description: Allow a player to share a list with a player
+        default: true
+    todolistexpress.unshare:
+        description: Allow a player to unshare a list with a player
+        default: true
+
+    
