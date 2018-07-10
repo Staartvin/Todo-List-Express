@@ -9,7 +9,9 @@ import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
+import java.util.List;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 /**
  * This command allows a player to select a todo list.
@@ -52,7 +54,6 @@ public class SelectCommand extends TodoListCommand {
 
         UUID uuid = ((Player) sender).getUniqueId();
 
-
         // Check if the player is related to this todo list
         if (!selectedTodoList.isPlayerRelated(uuid)) {
             sender.sendMessage(ChatColor.RED + "You are not allowed to select this todo list because you are not " +
@@ -82,5 +83,24 @@ public class SelectCommand extends TodoListCommand {
     @Override
     public String getUsage() {
         return "/todolist select <name>";
+    }
+
+    @Override
+    public List<String> onTabComplete(CommandSender sender, Command cmd, String commandLabel, String[] args) {
+
+        // If no argument was given, just give all todo lists
+        if (args.length < 2) {
+            return plugin.getTodoListManager().getAllTodoLists().stream().map(TodoList::getName).collect(Collectors
+                    .toList());
+        }
+
+        // Get the name of the list
+        String name = TodoListUtils.getStringFromArgs(args, 1);
+
+        System.out.println("NAME: " + name);
+
+        // Return all todo lists that start with the given characters
+        return plugin.getTodoListManager().getAllTodoLists().stream().filter(todoList -> todoList.getName().toLowerCase
+                ().startsWith(name.toLowerCase())).map(TodoList::getName).collect(Collectors.toList());
     }
 }

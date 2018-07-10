@@ -51,6 +51,7 @@ public class ListCommand extends TodoListCommand {
             ownLists = false;
         } else {
             sender.sendMessage(ChatColor.RED + "I'm not sure what you mean by that command. Please try again.");
+            return true;
         }
 
         List<TodoList> todoLists = new ArrayList<>();
