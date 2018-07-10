@@ -47,6 +47,7 @@ public class CommandsManager implements TabExecutor {
         registeredCommands.put(Arrays.asList("info"), new InfoCommand(plugin));
         registeredCommands.put(Arrays.asList("list", "li"), new ListCommand(plugin));
         registeredCommands.put(Arrays.asList("reload", "re"), new ReloadCommand(plugin));
+        registeredCommands.put(Arrays.asList("add"), new AddCommand(plugin));
 
         plugin.getLogger().info("Loaded all commands");
     }

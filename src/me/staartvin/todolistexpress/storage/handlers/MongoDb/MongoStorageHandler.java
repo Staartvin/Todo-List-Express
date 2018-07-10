@@ -37,8 +37,27 @@ public class MongoStorageHandler extends StorageHandler {
             return;
         }
 
-        MongoTodoList mongoTodoList = this.convertToMongoFormat(todoList);
+        List<MongoTodoList> matchingLists = datastore.find(MongoTodoList.class).field("name").equalIgnoreCase(todoList
+                .getName()).asList();
 
+        MongoTodoList mongoTodoList;
+
+        // If there is no old record, set new record to converted todo list.
+        if (matchingLists == null || matchingLists.isEmpty()) {
+            mongoTodoList = this.convertToMongoFormat(todoList);
+        } else {
+            // If there is a matching record, delete that first.
+
+            // There is a matching todo list.
+            mongoTodoList = matchingLists.get(0);
+
+            // Delete old record
+            datastore.delete(mongoTodoList);
+
+            mongoTodoList = this.convertToMongoFormat(todoList);
+        }
+
+        // Save new record
         datastore.save(mongoTodoList);
     }
 

@@ -3,6 +3,7 @@ package me.staartvin.todolistexpress;
 import me.staartvin.todolistexpress.commands.manager.CommandsManager;
 import me.staartvin.todolistexpress.storage.StorageManager;
 import me.staartvin.todolistexpress.storage.handlers.MongoDb.MongoStorageHandler;
+import me.staartvin.todolistexpress.storage.tasks.UpdateStorageHandlerTask;
 import me.staartvin.todolistexpress.todolists.TodoListManager;
 import org.bukkit.plugin.java.JavaPlugin;
 
@@ -39,6 +40,10 @@ public class TodoListExpress extends JavaPlugin {
         } else {
             this.getLogger().severe("Could not connect to storage handler! Something is severely wrong!");
         }
+
+        // Run a task that updates the storage with what's in memory every minute.
+        this.getServer().getScheduler().runTaskTimerAsynchronously(this, new UpdateStorageHandlerTask(this), 20 * 60,
+                20 * 60);
 
         this.getLogger().info(this.getDescription().getFullName() + " has been enabled!");
     }

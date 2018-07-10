@@ -209,4 +209,15 @@ public class TodoList {
     public void setType(TodoListType type) {
         this.type = type;
     }
+
+    /**
+     * Check whether a player has a permission for this todo list.
+     *
+     * @param uuid       UUID of the player to check
+     * @param permission Permission to check
+     * @return true if the given player has the given permission for this todo list. False otherwise.
+     */
+    public boolean hasPermission(UUID uuid, ListPermission permission) {
+        return isPlayerRelated(uuid) && getPlayerPermissions(uuid).contains(permission);
+    }
 }
