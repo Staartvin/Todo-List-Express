@@ -35,5 +35,17 @@ public abstract class StorageHandler {
      */
     public abstract List<TodoList> getAllTodoLists();
 
+    /**
+     * Load the storage handler so it is ready to store data.
+     */
+    public abstract void loadStorageHandler();
+
+    /**
+     * Check whether this storage handler is ready to store and retrieve data.
+     *
+     * @return true if it is ready, false if not.
+     */
+    public abstract boolean isReady();
+
 
 }

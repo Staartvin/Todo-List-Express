@@ -53,7 +53,9 @@ public class InfoCommand extends TodoListCommand {
         sender.sendMessage(ChatColor.GRAY + "------- [ " + ChatColor.GOLD + selectedTodoList.getName() + ChatColor
                 .GRAY + " ] -------");
         sender.sendMessage(ChatColor.GREEN + "Description: " + ChatColor.DARK_AQUA + selectedTodoList.getDescription());
-        sender.sendMessage(ChatColor.YELLOW + "Owner: " + ChatColor.GOLD + selectedTodoList.getOwner());
+        sender.sendMessage(ChatColor.YELLOW + "Owner: " + ChatColor.GOLD + selectedTodoList.getOwner().getName());
+        sender.sendMessage(ChatColor.RED + "Type: " + ChatColor.GOLD + selectedTodoList.getType().toString()
+                .toLowerCase());
 
         return true;
     }

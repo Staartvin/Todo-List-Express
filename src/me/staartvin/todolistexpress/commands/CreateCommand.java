@@ -2,6 +2,7 @@ package me.staartvin.todolistexpress.commands;
 
 import me.staartvin.todolistexpress.TodoListExpress;
 import me.staartvin.todolistexpress.commands.manager.TodoListCommand;
+import me.staartvin.todolistexpress.todolists.types.TodoListPlayer;
 import me.staartvin.todolistexpress.util.TodoListUtils;
 import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
@@ -50,7 +51,8 @@ public class CreateCommand extends TodoListCommand {
         UUID uuid = ((Player) sender).getUniqueId();
 
         // Try to create a todo list
-        boolean creationResult = plugin.getTodoListManager().createTodoList(uuid, name);
+        boolean creationResult = plugin.getTodoListManager().createTodoList(new TodoListPlayer(uuid, sender.getName()
+        ), name);
 
         // Show message to the player indicating success or failure.
         if (!creationResult) {

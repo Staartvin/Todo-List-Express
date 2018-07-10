@@ -8,11 +8,11 @@ public class TodoList {
     private List<Todo> todos = new ArrayList<>();
 
     // Player that created the list
-    private UUID owner;
+    private TodoListPlayer owner;
 
     // Players that are in some way related to this list.
     // We store a list of permissions each player is able to perform on this list.
-    private Map<UUID, List<ListPermission>> relatedPlayers = new HashMap<>();
+    private Map<TodoListPlayer, List<ListPermission>> relatedPlayers = new HashMap<>();
 
     // Name of the todo list
     private String name;
@@ -20,16 +20,20 @@ public class TodoList {
     // Description of the todo list
     private String description = "No description";
 
+    // The accessibility type of this todo list.
+    // By default it is private.
+    private TodoListType type = TodoListType.PRIVATE;
+
     public TodoList() {
     }
 
-    public TodoList(UUID uuid, String name) {
+    public TodoList(TodoListPlayer player, String name) {
         this.setName(name);
-        this.setOwner(uuid);
+        this.setOwner(player);
     }
 
-    public TodoList(UUID uuid, String name, String description) {
-        this(uuid, name);
+    public TodoList(TodoListPlayer player, String name, String description) {
+        this(player, name);
 
         this.setDescription(description);
     }
@@ -73,38 +77,38 @@ public class TodoList {
     /**
      * Get the player that created this list
      *
-     * @return UUID of the creator
+     * @return {@link TodoListPlayer} of the creator
      */
-    public UUID getOwner() {
+    public TodoListPlayer getOwner() {
         return owner;
     }
 
     /**
      * Set the player that created this list
      *
-     * @param owner UUID of the creator
+     * @param owner {@link TodoListPlayer} of the creator
      */
-    public void setOwner(UUID owner) {
+    public void setOwner(TodoListPlayer owner) {
         this.owner = owner;
     }
 
     /**
      * Get a list of players that are related to this list
      *
-     * @return list of UUIDs
+     * @return list of {@link TodoListPlayer} objects
      */
-    public List<UUID> getRelatedPlayers() {
+    public List<TodoListPlayer> getRelatedPlayers() {
         return new ArrayList<>(relatedPlayers.keySet());
     }
 
     /**
      * Add a permission to a player that is related to this list
      *
-     * @param uuid       UUID of the player
+     * @param player     {@link TodoListPlayer} Player
      * @param permission Permission to add
      */
-    public void addPlayerPermission(UUID uuid, ListPermission permission) {
-        List<ListPermission> permissions = getPlayerPermissions(uuid);
+    public void addPlayerPermission(TodoListPlayer player, ListPermission permission) {
+        List<ListPermission> permissions = getPlayerPermissions(player.getUUID());
 
         // Check if the permission is already defined for the player
         if (permissions.contains(permission)) {
@@ -115,7 +119,7 @@ public class TodoList {
         permissions.add(permission);
 
         // Update the list
-        this.relatedPlayers.put(uuid, permissions);
+        this.relatedPlayers.put(player, permissions);
     }
 
     /**
@@ -129,13 +133,13 @@ public class TodoList {
 
 
         // If the player is the owner of the list, we will give him all permissions.
-        if (this.getOwner().equals(uuid)) {
+        if (this.getOwner().getUUID().equals(uuid)) {
             permissions.addAll(Arrays.asList(ListPermission.values()));
         }
 
         // If the hashmap contains the uuid, return the permissions of the player.
-        else if (this.relatedPlayers.containsKey(uuid)) {
-            permissions = this.relatedPlayers.get(uuid);
+        else if (this.relatedPlayers.containsKey(new TodoListPlayer(uuid))) {
+            permissions = this.relatedPlayers.get(new TodoListPlayer(uuid));
         }
 
         // Otherwise, return an empty list.
@@ -186,5 +190,23 @@ public class TodoList {
      */
     public boolean isPlayerRelated(UUID uuid) {
         return !this.getPlayerPermissions(uuid).isEmpty();
+    }
+
+    /**
+     * Get the type of this todo list
+     *
+     * @return type of todo list
+     */
+    public TodoListType getType() {
+        return type;
+    }
+
+    /**
+     * Set the type of this todo list.
+     *
+     * @param type Type to set it to.
+     */
+    public void setType(TodoListType type) {
+        this.type = type;
     }
 }

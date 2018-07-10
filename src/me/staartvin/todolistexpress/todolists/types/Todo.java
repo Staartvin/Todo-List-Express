@@ -2,7 +2,6 @@ package me.staartvin.todolistexpress.todolists.types;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.UUID;
 
 public class Todo {
 
@@ -10,9 +9,9 @@ public class Todo {
 
     private String description;
 
-    private UUID creator;
+    private TodoListPlayer owner;
 
-    private List<UUID> assignedPlayers = new ArrayList<>();
+    private List<TodoListPlayer> assignedPlayers = new ArrayList<>();
 
     /**
      * Get the name of this todo
@@ -53,45 +52,45 @@ public class Todo {
     /**
      * Get the player that created the todo
      *
-     * @return UUID of the creator
+     * @return TodoListPlayer Owner
      */
-    public UUID getCreator() {
-        return creator;
+    public TodoListPlayer getOwner() {
+        return owner;
     }
 
     /**
      * Set the player that created the todo
      *
-     * @param creator UUID of the creator
+     * @param owner TodoListPlayer Owner
      */
-    public void setCreator(UUID creator) {
-        this.creator = creator;
+    public void setOwner(TodoListPlayer owner) {
+        this.owner = owner;
     }
 
     /**
      * Get all players that are assigned to this todo
      *
-     * @return a list of UUIDs representing the assigned players
+     * @return a list of {@link TodoListPlayer} representing the assigned players
      */
-    public List<UUID> getAssignedPlayers() {
+    public List<TodoListPlayer> getAssignedPlayers() {
         return assignedPlayers;
     }
 
     /**
      * Set all players that are assigned to this todo
      *
-     * @param assignedPlayers a list of UUIDs.
+     * @param assignedPlayers a list of {@link TodoListPlayer}.
      */
-    public void setAssignedPlayers(List<UUID> assignedPlayers) {
+    public void setAssignedPlayers(List<TodoListPlayer> assignedPlayers) {
         this.assignedPlayers = assignedPlayers;
     }
 
     /**
      * Set a player as assigned to this todo
      *
-     * @param assignedPlayer UUID of the player
+     * @param assignedPlayer {@link TodoListPlayer} of the player
      */
-    public void addAssignedPlayer(UUID assignedPlayer) {
+    public void addAssignedPlayer(TodoListPlayer assignedPlayer) {
 
         if (assignedPlayers.contains(assignedPlayer)) {
             return;
@@ -103,9 +102,9 @@ public class Todo {
     /**
      * Remove an assigned player from this todo.
      *
-     * @param assignedPlayer UUID of the player
+     * @param assignedPlayer {@link TodoListPlayer} of the player
      */
-    public void removeAssignedPlayer(UUID assignedPlayer) {
+    public void removeAssignedPlayer(TodoListPlayer assignedPlayer) {
         this.assignedPlayers.remove(assignedPlayer);
     }
 }

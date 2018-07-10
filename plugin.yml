@@ -8,7 +8,7 @@ commands:
     todolist:
         description: Main command of TodoListExpress
         usage: "/todolist <command>"
-        aliases: [todo]
+        aliases: [todo, td]
 permissions:
     todolistexpress.help:
         description: Allow a player to see a list of commands that can be performed
@@ -16,6 +16,12 @@ permissions:
     todolistexpress.info:
         description: Allow a player to see info about a todo list
         default: true
+    todolistexpress.list.self:
+        description: Allow a player to see all of their own todo lists
+        default: true
+    todolistexpress.list.other:
+        description: Allow a player to see all of the public todo lists
+        default: op
     todolistexpress.select:
         description: Allow a player to select a todo list
         default: true
@@ -37,5 +43,8 @@ permissions:
     todolistexpress.unshare:
         description: Allow a player to unshare a list with a player
         default: true
+    todolistexpress.reload:
+        description: Allow a player to reload todo lists from storage
+        default: op
 
     

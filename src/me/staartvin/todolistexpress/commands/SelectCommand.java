@@ -41,7 +41,7 @@ public class SelectCommand extends TodoListCommand {
         // Get the name of the list
         String name = TodoListUtils.getStringFromArgs(args, 1);
 
-        TodoList selectedTodoList = plugin.getTodoListManager().getTodoList(name).orElse(null);
+        TodoList selectedTodoList = plugin.getTodoListManager().getTodoList(name, true).orElse(null);
 
         // If there already exists a todo list with the given name, abort the mission.
         if (selectedTodoList == null) {

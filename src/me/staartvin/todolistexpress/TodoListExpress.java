@@ -2,6 +2,7 @@ package me.staartvin.todolistexpress;
 
 import me.staartvin.todolistexpress.commands.manager.CommandsManager;
 import me.staartvin.todolistexpress.storage.StorageManager;
+import me.staartvin.todolistexpress.storage.handlers.MongoDb.MongoStorageHandler;
 import me.staartvin.todolistexpress.todolists.TodoListManager;
 import org.bukkit.plugin.java.JavaPlugin;
 
@@ -25,7 +26,19 @@ public class TodoListExpress extends JavaPlugin {
         // Create a storage manager that is used to store the lists
         this.setStorageManager(new StorageManager(this));
 
-        // TODO: Set storage handler of storage manager
+        // Set MongoDb handler as storage handler
+        this.getStorageManager().setStorageHandler(new MongoStorageHandler(this));
+
+        // Load storage handler so it establishes a connection.
+        this.getStorageManager().getStorageHandler().loadStorageHandler();
+
+        // If storage manager is ready, load todo list manager
+        if (this.getStorageManager().getStorageHandler().isReady()) {
+            this.getTodoListManager().loadTodoLists(this.getStorageManager().getStorageHandler());
+            this.getLogger().info("Loaded todo lists that are stored.");
+        } else {
+            this.getLogger().severe("Could not connect to storage handler! Something is severely wrong!");
+        }
 
         this.getLogger().info(this.getDescription().getFullName() + " has been enabled!");
     }

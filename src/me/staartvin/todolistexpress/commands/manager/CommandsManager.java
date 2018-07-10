@@ -1,10 +1,7 @@
 package me.staartvin.todolistexpress.commands.manager;
 
 import me.staartvin.todolistexpress.TodoListExpress;
-import me.staartvin.todolistexpress.commands.CreateCommand;
-import me.staartvin.todolistexpress.commands.HelpCommand;
-import me.staartvin.todolistexpress.commands.InfoCommand;
-import me.staartvin.todolistexpress.commands.SelectCommand;
+import me.staartvin.todolistexpress.commands.*;
 import me.staartvin.todolistexpress.todolists.types.TodoList;
 import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
@@ -44,10 +41,12 @@ public class CommandsManager implements TabExecutor {
         this.plugin = plugin;
 
         // Register command classes
-        registeredCommands.put(Arrays.asList("create"), new CreateCommand(plugin));
+        registeredCommands.put(Arrays.asList("create", "cr"), new CreateCommand(plugin));
         registeredCommands.put(Arrays.asList("help"), new HelpCommand(plugin));
-        registeredCommands.put(Arrays.asList("select"), new SelectCommand(plugin));
+        registeredCommands.put(Arrays.asList("select", "sel"), new SelectCommand(plugin));
         registeredCommands.put(Arrays.asList("info"), new InfoCommand(plugin));
+        registeredCommands.put(Arrays.asList("list", "li"), new ListCommand(plugin));
+        registeredCommands.put(Arrays.asList("reload", "re"), new ReloadCommand(plugin));
 
         plugin.getLogger().info("Loaded all commands");
     }
